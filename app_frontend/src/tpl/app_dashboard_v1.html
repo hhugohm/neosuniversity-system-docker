@@ -1,0 +1,68 @@
+<!--<div class="bg-light lter b-b wrapper-md">
+
+</div> -->
+
+<div class="wrapper-md" ng-controller="MisCursosController">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-white b-a">
+
+                <li class="active"><i class="fa fa-home"></i> Mis cursos</li>
+            </ul>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                    Mis cursos
+                </div>
+
+                <div class="panel-body">
+
+                    <div data-loading> </div>
+
+
+                    <div uib-alert ng-repeat="alert in alerts" class="alert col-sm-12" ng-class="'alert-' + (alert.type || 'danger')"
+                         close="closeAlert($index)" ng-bind-html="alert.msg">
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="list-group list-group-lg list-group-sp">
+
+                                <a  ui-sref="app.course-overview({courseId:4, description:'JAVA11Premium'})" class="list-group-item clearfix">
+              <span class="pull-left thumb-md avatar m-r">
+                    <img src="img/neosuniv/java11-oracle.jpg">
+
+              </span>
+                                    <span class="clear">
+                <span style="font-size: 18px;">Curso Premium Java 11 +  GitHub <span class="label bg-danger">Mira la oferta!!</span></span>
+                                        <!--<small class="text-muted clear text-ellipsis">This is nice</small>-->
+              </span>
+                                </a>
+
+
+                                <a ng-click="detalle(course.id, course.coursename, course)" class="list-group-item clearfix" ng-repeat="course in courses">
+              <span class="pull-left thumb-md avatar m-r">
+                    <img ng-src="{{course.imgthumb}}">
+
+              </span>
+              <span class="clear">
+                <span style="font-size: 18px;">{{course.coursename}}</span>
+                <!--<small class="text-muted clear text-ellipsis">This is nice</small>-->
+              </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--
+           -->
+        </div>
+    </div>
+</div>

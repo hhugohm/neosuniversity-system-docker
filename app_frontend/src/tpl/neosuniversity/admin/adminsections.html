@@ -1,0 +1,570 @@
+<div class="wrapper-md" ng-controller="TemarioController">
+    <!-- toaster directive -->
+    <toaster-container
+            toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    Temario - Lista de Unidades
+                </div>
+
+                <div class="panel-body">
+                    <h3>{{courseName}}</h3>
+
+                    <div class="row" ng-show="showlist">
+
+                        <div class="col-md-12">
+                            <div data-loading></div>
+                            <!-- grid section -->
+
+                            <div class="table-responsive">
+                                <div id="grid1" ui-grid="gridOptions" ui-grid-tree-view ui-grid-selection
+                                     class="grid"></div>
+                            </div>
+
+                            <div style="margin-top:20px">
+
+                                <button class="btn btn-danger" ng-click="viewAltaUnidad()"> Nueva Unidad <i
+                                        class="fa fa-folder" aria-hidden="true"></i></button>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row" ng-show="showAltaUnidad">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="form" role="form" novalidate
+                                  ng-submit="saveNewUnidad(form)">
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Nueva Unidad</legend>
+                                    <div data-loading></div>
+
+                                    <!-- Text input http://getbootstrap.com/css/#forms -->
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.unidadName.$touched ||  form.$submitted) && form.unidadName.$invalid }">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Unidad</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="unidad.sectionName"
+                                                   id="unidadName" name="unidadName"
+                                                   required>
+                                            <div class="help-block" ng-messages="form.unidadName.$error"
+                                                 ng-if="form.unidadName.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El nombre de la unidad es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="saveNewSection()"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ unidad | json }}
+                                            </pre>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showModifUnidad">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="formModifUnid" role="form" novalidate>
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Modificación Unidad</legend>
+                                    <div data-loading></div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (formModifUnid.unidadName.$touched ||  formModifUnid.$submitted) && formModifUnid.unidadName.$invalid }">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Unidad</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="unidad.description"
+                                                   name="unidadName"
+                                                   required>
+                                            <div class="help-block" ng-messages="formModifUnid.unidadName.$error"
+                                                 ng-if="formModifUnid.unidadName.$touched||  formModifUnid.$submitted">
+
+                                                <div ng-message="required">El nombre de la unidad es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="regresar()"> Regresar <i class="fa fa-reply" aria-hidden="true"></i></button>
+                                            <button class="btn btn-danger" ng-click="saveModifUnidad()"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                    <!--
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ unidad | json }}
+                                            </pre>
+                                        </div>
+                                    </div> -->
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showAltaClass">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="frmClass" role="form" novalidate
+                                 >
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Nueva Clase</legend>
+                                    <div data-loading></div>
+
+
+                                    <div class="form-group"
+                                    >
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Unidad</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.nombreUnidad}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmClass.classDescription.$touched ||  frmClass.$submitted) && frmClass.classDescription.$invalid }">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Clase</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="clase.classDescription"
+                                                   id="classDescription" name="classDescription"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmClass.classDescription.$error"
+                                                 ng-if="frmClass.classDescription.$touched||  frmClass.$submitted">
+
+                                                <div ng-message="required">El nombre de la clase es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmClass.videoURL.$touched ||  frmClass.$submitted) && frmClass.videoURL.$invalid }">
+                                        <label for="videoURL" class="control-label col-md-2">Url del video</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="clase.videoURL"
+                                                   id="videoURL" name="videoURL"
+                                                   >
+                                            <div class="help-block" ng-messages="frmClass.videoURL.$error"
+                                                 ng-if="frmClass.videoURL.$touched||  frmClass.$submitted">
+
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+
+                                            <button class="btn btn-danger" ng-click="regresar()"> Regresar <i class="fa fa-reply" aria-hidden="true"></i></button>
+
+                                            <button class="btn btn-danger" ng-click="saveNewClase(frmClass)"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                    <!--
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ clase | json }}
+                                            </pre>
+                                        </div>
+                                    </div> -->
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showModifClass">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="frmMClass" role="form" novalidate
+                            >
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Modificar Clase</legend>
+                                    <div data-loading></div>
+
+
+                                    <div class="form-group">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Unidad</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.nombreUnidad}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmMClass.classDescription.$touched ||  frmMClass.$submitted) && frmMClass.classDescription.$invalid }">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la
+                                            Clase</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="clase.classDescription"
+                                                   name="classDescription"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmMClass.classDescription.$error"
+                                                 ng-if="frmMClass.classDescription.$touched||  frmMClass.$submitted">
+
+                                                <div ng-message="required">El nombre de la clase es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmMClass.videoURL.$touched ||  frmMClass.$submitted) && frmMClass.videoURL.$invalid }">
+                                        <label for="videoURL" class="control-label col-md-2">Url del video</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="clase.videoURL"
+                                                   name="videoURL"
+                                                   >
+                                            <div class="help-block" ng-messages="frmMClass.videoURL.$error"
+                                                 ng-if="frmMClass.videoURL.$touched||  frmMClass.$submitted">
+
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+<!--
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ clase | json }}
+                                                {{frmMClass|json}}
+                                            </pre>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="regresar()"> Regresar <i class="fa fa-reply" aria-hidden="true"></i></button>
+
+                                            <button class="btn btn-danger" ng-click="saveModifClase(frmMClass)"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- archivos -->
+                    <div class="row" ng-show="showModifClass">
+
+                        <div class="col-md-12">
+
+                            <!-- Form Name -->
+                            <legend>Archivos Clase</legend>
+
+                            <table class="table table-striped m-b-none">
+                                <thead>
+                                <tr>
+                                    <th style="width:60px;" class="text-center"></th>
+                                    <th>Archivo</th>
+                                    <th>Descargar</th>
+                                    <th>Modificar</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr ng-repeat="file in files">
+                                    <td>
+                                        <i class="fa fa-file" style="font-size:20px" aria-hidden="true"></i>
+
+                                    </td>
+                                    <td>{{file.file_name}}</td>
+                                    <td><a class="btn m-b-xs btn-sm btn-info" ng-href="{{file.file_path}}" target="_blank"><i
+                                            class="fa fa-download"></i></a>
+                                    </td>
+
+                                    <td><a class="btn m-b-xs btn-sm btn-info" ng-click="showModifyFile(file)"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                    </td>
+
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                            <form class="form-horizontal"  role="form" novalidate
+                            >
+                                <fieldset>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="showNewFile()"> Agregar archivo <i
+                                                    class="fa fa-upload" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showAddFile">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="frmFile" role="form" novalidate
+                            >
+                                <fieldset>
+
+                                    <!-- Form Name -->
+                                    <legend>Nuevo Archivo</legend>
+                                    <div data-loading></div>
+
+
+                                    <div class="form-group">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la Unidad</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.nombreUnidad}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la Clase</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.classDescription}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmFile.fileName.$touched ||  frmFile.$submitted) && frmFile.fileName.$invalid }">
+                                        <label  class="control-label col-md-2">Nombre del archivo</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="file.fileName"
+                                                   name="fileName"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmFile.fileName.$error"
+                                                 ng-if="frmFile.fileName.$touched||  frmFile.$submitted">
+
+                                                <div ng-message="required">El nombre del archivo es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmFile.filePath.$touched ||  frmFile.$submitted) && frmFile.filePath.$invalid }">
+                                        <label  class="control-label col-md-2">Ruta del archivo</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="file.filePath"
+                                                   name="filePath"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmFile.filePath.$error"
+                                                 ng-if="frmFile.filePath.$touched||  frmFile.$submitted">
+
+                                                <div ng-message="required">La ruta del archivo es requerida</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="regresarClase()"> Regresar <i class="fa fa-reply" aria-hidden="true"></i></button>
+                                            <button type="submit" class="btn btn-danger" ng-click="saveNewFile(frmFile)"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-show="showModifFile">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="frmFileModif" role="form" novalidate
+                            >
+                                <fieldset>
+
+                                    <!-- Form Name -->
+                                    <legend>Modificacion Archivo</legend>
+                                    <div data-loading></div>
+
+
+                                    <div class="form-group">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la Unidad</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.nombreUnidad}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="unidadName" class="control-label col-md-2">Nombre de la Clase</label>
+                                        <div class="col-md-5">
+                                            <label style="padding-top: 7px;margin-bottom: 0">
+                                                {{clase.classDescription}} </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmFileModif.fileName.$touched ||  frmFileModif.$submitted) && frmFileModif.fileName.$invalid }">
+                                        <label  class="control-label col-md-2">Nombre del archivo</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="file.fileName"
+                                                   name="fileName"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmFileModif.fileName.$error"
+                                                 ng-if="frmFileModif.fileName.$touched||  frmFileModif.$submitted">
+
+                                                <div ng-message="required">El nombre del archivo es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (frmFileModif.filePath.$touched ||  frmFileModif.$submitted) && frmFileModif.filePath.$invalid }">
+                                        <label  class="control-label col-md-2">Ruta del archivo</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="file.filePath"
+                                                   name="filePath"
+                                                   required>
+                                            <div class="help-block" ng-messages="frmFileModif.filePath.$error"
+                                                 ng-if="frmFileModif.filePath.$touched||  frmFileModif.$submitted">
+
+                                                <div ng-message="required">La ruta del archivo es requerida</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="regresarClase()"> Regresar <i class="fa fa-reply" aria-hidden="true"></i></button>
+                                            <button type="submit" class="btn btn-danger" ng-click="updateFile(frmFileModif)"> Guardar <i
+                                                    class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+

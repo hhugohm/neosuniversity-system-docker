@@ -1,0 +1,21 @@
+FROM    ubuntu:18.04
+
+RUN apt-get update
+RUN apt-get install -y git-core
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
+COPY    . /app
+
+WORKDIR /app
+RUN  npm config set strict-ssl false
+RUN  npm cache clean -f
+RUN npm install -g grunt-cli
+RUN npm install -g grunt
+RUN npm install -g bower
+
+RUN npm install
+RUN bower install --allow-root
+RUN grunt build:angular --allow-root
+
+ENTRYPOINT npm start

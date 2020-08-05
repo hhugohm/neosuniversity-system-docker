@@ -1,0 +1,100 @@
+<div class="container " ng-controller="ResetPasswordEmailController" ng-init="app.settings.container = false;">
+    <!-- toaster directive -->
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+    <a href class="navbar-brand block m-t">{{app.name}}</a>
+
+    <div class="row">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">
+                    <div class="panel-title">Resetear Password</div>
+
+                </div>
+
+                <div style="padding-top:30px" class="panel-body" >
+
+                    <div uib-alert ng-repeat="alert in alerts" class="alert col-sm-12" ng-class="'alert-' + (alert.type || 'danger')"
+                         close="closeAlert($index)">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+
+                        {{alert.msg}}
+                    </div>
+
+
+
+                    <form id="form" name="form" class="form-horizontal" role="form" novalidate>
+
+
+
+                        <!-- Prepended text-->
+                        <div class="form-group" ng-class="{ 'has-error': form.password.$touched && form.password.$invalid }" ng-if="validLink">
+                            <label class="col-md-2 control-label" for="password">Password</label>
+                            <div class="col-md-10">
+
+
+                                <input ng-minlength="6" ng-model="user.password" id="password" name="password" class="form-control" placeholder="Password" type="password" required>
+
+                                <div   class="help-block "  ng-messages="form.password.$error" ng-if="form.password.$touched"  >
+
+                                    <div ng-message="required">El password es requerido</div>
+                                    <div ng-message="minlength">El password debe tener como mínimo 6 caracteres</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error': form.password2.$touched && form.password2.$invalid }" ng-if="validLink">
+                            <label class="col-md-2 control-label" for="password2">Confirma el Password</label>
+                            <div class="col-md-10">
+
+
+                                <input ng-model="user.password2" id="password2" name="password2" class="form-control" placeholder="Reingresa el password" type="password" required  field-check="password">
+
+                                <div   class="help-block "  ng-messages="form.password2.$error" ng-if="form.password2.$touched"  >
+
+                                    <div ng-message="required">El password es requerido</div>
+                                    <div ng-message="fieldmatch">Los passwords no coinciden</div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group"  ng-if="validLink">
+                            <div class="col-md-12 control">
+                                <div class="line line-dashed"></div>
+                                <p class="text-center">  </p>
+                                <button type="submit" class="btn btn-lg btn-success  btn-block" promise-btn="service"  ng-click="changePwd()" ng-disabled='form.$invalid'>Cambiar Password</button>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="!validLink">
+                            <div class="col-md-12 control">
+                                <div class="line line-dashed"></div>
+
+                                <a ui-sref="access.signin" class="btn btn-lg btn-default btn-block">Regresar a NeosUniversity</a>
+
+                            </div>
+                        </div>
+
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="text-center" ng-include="'tpl/blocks/page_footer.html'">
+            {% include 'blocks/page_footer.html' %}
+        </div>
+    </div>
+</div>

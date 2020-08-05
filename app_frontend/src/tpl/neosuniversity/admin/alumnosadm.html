@@ -1,0 +1,174 @@
+<div class="wrapper-md" ng-controller="AlumnosAdmController">
+    <!-- toaster directive -->
+    <toaster-container
+            toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    Alumnos - Cursos
+                </div>
+
+                <div class="panel-body">
+
+                    <div data-loading></div>
+
+                    <div class="row" ng-show="showListCourses">
+
+                        <div class="col-md-12">
+
+
+
+
+                            <table st-table="courses" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre del Curso</th>
+                                    <th>Fecha Creacion</th>
+                                    <th>Alumnos Inscritos</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="curso in courses">
+                                    <td>{{curso.id}}</td>
+                                    <td>{{curso.coursename}}</td>
+                                    <td>{{getDate(curso.creationdate)}}</td>
+                                    <td><button class="btn btn-sm btn-danger" ng-click="showAlumnosByCurso(curso)"><i class="fa fa-user-o" aria-hidden="true"></i></button></td>
+
+                                </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row" ng-show="showListaAlumnos">
+
+                        <div class="col-md-12">
+
+                            <form class="form-horizontal" name="form" role="form" novalidate
+                                  ng-submit="saveNewUnidad(form)">
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Curso: {{curso.coursename}}  {{getDate(curso.creationdate)}}</legend>
+                                </fieldset>
+                             </form>
+
+                            <table st-table="courses" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>E-mail</th>
+                                    <th>Nombre del Alumno</th>
+                                    <th>Fecha Inscripcion</th>
+                                    <th>Pago Completo</th>
+                                    <th>OrderID Paypal</th>
+                                    <th>PaymentID Paypal</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="alumno in alumnos">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{alumno.email}}</td>
+                                    <td>{{alumno.completename}}</td>
+                                    <td>{{getDate(alumno.enrollment_date)}}</td>
+                                    <td>{{alumno.pay_is_complete==1 ? 'SI' : 'NO'}}</td>
+                                    <td>{{alumno.paypal_order_id}}</td>
+                                    <td>{{alumno.paypal_payment_id}}</td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+
+                                <div class="col-md-5">
+                                    <button class="btn btn-danger" ng-click="showFormInscripcion()">Inscribir alumno<i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                     </div>
+
+
+                    <div class="row" ng-show="showInscribir">
+
+                        <div class="col-md-12" >
+
+
+                            <form class="form-horizontal" name="form" role="form" novalidate autocomplete="off">
+                                <fieldset>
+
+
+                                    <!-- Form Name -->
+                                    <legend>Inscripcion de Alumno</legend>
+
+
+                                    <!-- Text input http://getbootstrap.com/css/#forms -->
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.email.$touched ||  form.$submitted) && form.email.$invalid }">
+                                        <label for="email" class="control-label col-md-2">Correo Electronico</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="alumno.email"
+                                                   id="email" name="email" auto-complete="autoCompleteOptions"
+                                                   required>
+                                            <div class="help-block" ng-messages="form.email.$error"
+                                                 ng-if="form.email.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El correo electronico es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                      >
+                                        <label for="completename" class="control-label col-md-2">Nombre</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="alumnoSelected.completename"
+                                                   name="completename" id="completename"
+                                                   >
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger" ng-click="addAlumno()"> Guardar <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+
+                  </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

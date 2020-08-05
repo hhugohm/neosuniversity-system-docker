@@ -1,0 +1,261 @@
+<div class="wrapper-md" ng-controller="PlayController">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-white b-a">
+                <li><a href><i class="fa fa-home"></i> Todos tus cursos</a></li>
+                <li><a href>Panel de control</a></li>
+                <li class="active">Curso Git</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                </div>
+                <!--
+               <div class="row top-buffer">
+
+                   <div class="col-md-offset-3 col-md-2">
+                           <button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-caret-square-o-left fa-2x"></i>Leccion Anterior</button>
+
+                    </div>
+                       <div class="col-md-offset-2 col-md-2">
+                           <button class="btn m-b-xs btn-sm btn-info btn-addon"><i class="fa fa-caret-square-o-right fa-2x"></i>Leccion Siguiente</button>
+
+                       </div>
+
+               </div>-->
+
+                <div class="row">
+                    <div data-loading> </div>
+                    <div class="col-md-offset-1 col-md-11 hidden-xs " >
+
+<!-- //player.vimeo.com/video/248399799?portrait=0&autoplay=true-->
+                <iframe  ng-src="{{trustSrc(tw_class.data.videourl)}}"  width="100%" height="650" frameborder="0"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12  hidden-sm hidden-md  hidden-lg" >
+
+                    <!-- //player.vimeo.com/video/248399799?portrait=0&autoplay=true-->
+                    <iframe  ng-src="{{trustSrc(tw_class.data.videourl)}}"  width="100%" height="300" frameborder="0"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                </div>
+            </div>
+
+            </div>
+        </div>
+        <!--
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Temario Curso
+                </div>
+                <div class="bg-white wrapper-md">
+                    <accordion close-others="true" class="panelcourses">
+                        <accordion-group ng-repeat="unidad in unidades" is-open="unidad.isOpen">
+                            <accordion-heading>
+                                <div>
+                                    {{unidad.nombre}}
+                                    <i class="pull-right glyphicon"
+                                       ng-class="{'glyphicon-chevron-down': unidad.isOpen, 'glyphicon-chevron-right': !unidad.isOpen}"></i>
+                                </div>
+                            </accordion-heading>
+                            <div>
+                                <div class="list-group" ng-repeat="tema in unidad.temas">
+                                    <a href class="list-group-item">
+                                        <i class="fa fa-circle-thin icon-blue pull-right" aria-hidden="true"></i>
+                                        <i class="fa fa-play-circle icon-play-topic" aria-hidden="true"></i>&nbsp;&nbsp;{{tema.idTema}}.
+                                        {{tema.descripcion}}
+                                    </a>
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row ">
+        <div class="col-md-12">
+            <tabset  class="tab-container">
+
+                <tab heading="Recursos  ">
+                    <div class="row">
+                        <div class="col-md-7">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Archivos</div>
+
+                                <div ng-if="!showListFiles" class="top-buffer alert alert-warning" role="alert">
+                                    <strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></strong>  Esta lección no cuenta con archivos asociados.
+                                </div>
+
+                                <table ng-if="showListFiles" class="table table-striped m-b-none">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:60px;" class="text-center"></th>
+                                        <th >Archivo</th>
+                                        <th >Descargar</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr ng-repeat="file in files">
+                                        <td>
+                                            <i class="fa fa-file" style="font-size:20px" aria-hidden="true"></i>
+
+                                        </td>
+                                        <td>{{file.file_name}}</td>
+                                        <td><a class="btn m-b-xs btn-sm btn-info" ng-href="{{file.file_path}}" target="_blank"><i class="fa fa-download"></i></a>
+                                        </td>
+
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </tab>
+
+                <tab heading="Temario">
+
+                    <accordion close-others="false" class="panelcourses">
+                        <!--is-open="section.isOpen" -->
+
+                        <accordion-group is-open="true" ng-repeat="section in sections">
+                            <accordion-heading>
+                                <div>
+                                    {{section.section.description}}
+
+                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': section.isOpen, 'glyphicon-chevron-right': !section.isOpen}"></i>
+                                    <!--  <i class="pull-right" style="font-style: italic;font-weight: bold;"> {{section.classescompleted}}/{{section.section.numberclasses}}</i> -->
+                                </div>
+                            </accordion-heading>
+
+                            <div>
+                                <div class="list-group" ng-repeat="tw_class in section.tw_classes">
+                                    <!--<a  ui-sref="app.playlesson({controlPanelId:{{tw_class.control_panel_id}}, classId:{{tw_class.class_id}}, sectionId:{{tw_class.section_id}} })"  class="list-group-item"> -->
+                                    <a ng-click="playLesson(tw_class)" class="list-group-item">
+                                        <i class="fa  icon-blue pull-right" aria-hidden="true"  ng-class="{'fa-circle-thin' : tw_class.iscompleted === 0, 'fa-check-circle' : tw_class.iscompleted === 1}" ></i>
+                                        <i class="fa fa-play-circle icon-play-topic" aria-hidden="true"></i>&nbsp;&nbsp;{{tw_class.clase.class_id}}. {{tw_class.clase.classdescription}}
+                                    </a>
+                                </div>
+                            </div>
+
+                        </accordion-group>
+
+                    </accordion>
+
+
+                    <!-- .comment-list
+
+                    <div class="clearfix m-b-lg">
+                        <a class="pull-left thumb-sm avatar"><img src="img/a6.jpg" alt="..."></a>
+                        <div class="m-l-xxl">
+                            <form class="m-b-none">
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-lg"
+                                           placeholder="Ingresa la pregunta">
+                           <span class="input-group-btn">
+                           <button class="btn btn-info btn-lg" type="button">Enviar</button>
+                           </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="m-b b-l m-l-md streamline">
+                        <div>
+                            <a class="pull-left thumb-sm avatar m-l-n-md">
+                                <img src="img/a1.jpg" class="img-circle" alt="...">
+                            </a>
+                            <div class="m-l-lg panel b-a">
+                                <div class="panel-heading pos-rlt b-b b-light">
+                                    <span class="arrow left"></span>
+                                    <a href>Neossoftware</a>
+                                    <label class="label bg-info m-l-xs">developer</label>
+                           <span class="text-muted m-l-sm pull-right">
+                           <i class="fa fa-clock-o"></i>
+                           Just now
+                           </span>
+                                </div>
+                                <div class="panel-body">
+                                    <div>¿Como hacer un clone de un repositorio en gitlab?
+                                    </div>
+                                    <div class="m-t-sm">
+                                        <a href ui-toggle-class class="btn btn-default btn-xs active">
+                                            <i class="fa fa-star-o text-muted text"></i>
+                                            <i class="fa fa-star text-danger text-active"></i>
+                                            Like
+                                        </a>
+                                        <a href class="btn btn-default btn-xs">
+                                            <i class="fa fa-mail-reply text-muted"></i> Reply
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-l-lg">
+                            <a class="pull-left thumb-sm avatar">
+                                <img src="img/a8.jpg" alt="...">
+                            </a>
+                            <div class="m-l-xxl panel b-a">
+                                <div class="panel-heading pos-rlt">
+                                    <span class="arrow left pull-up"></span>
+                           <span class="text-muted m-l-sm pull-right">
+                           <i class="fa fa-clock-o"></i>
+                           10m ago
+                           </span>
+                                    <a href>Mika Sam</a>
+                                    you have your ssh clone statement wrong git clone username
+                                    git@example.com:root/test.git, that statement would try to clone a repository named
+                                    username into the location relative to your current path
+                                    git@example.com:root/test.git
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="m-l-lg">
+                            <a class="pull-left thumb-sm avatar">
+                                <img src="img/a7.jpg" alt="...">
+                            </a>
+                            <div class="m-l-xxl panel b-a">
+                                <div class="panel-heading pos-rlt">
+                                    <span class="arrow left pull-up"></span>
+                           <span class="text-muted m-l-sm pull-right">
+                           <i class="fa fa-clock-o"></i>
+                           10m ago
+                           </span>
+                                    <a href>HHugo</a>
+                                    GitLab repos have 3 settings - pertaining to the users eligible to clone them -
+                                    private, internal and public. Adding the deploy user from your Capfile (or which
+                                    ever way you need access to the repo) and then logging in as that user and adding
+                                    its public SSH key will get you to the repo - provided you hit the gitlab server on
+                                    it's correct IP-address!
+
+                                    My question - it turned out - really was not about accessing GitLab correctly, but
+                                    hitting 10.0.x.x-something instead of gitserver.some-domain.tld, from some other
+                                    10.0.x.x app-server!
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div> -->
+
+                </tab>
+
+            </tabset>
+        </div>
+    </div>
+</div>

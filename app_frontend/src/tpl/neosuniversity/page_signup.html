@@ -1,0 +1,146 @@
+    <div class="container " ng-controller="SignupFormController" ng-init="app.settings.container = false;">
+      <a href class="navbar-brand block m-t">{{app.name}}</a>  
+
+      <div class="row">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+          <div class="panel panel-info" >
+            <div class="panel-heading">
+              <div class="panel-title">Sign Up</div>
+
+            </div>     
+
+            <div style="padding-top:30px" class="panel-body" >
+
+              <div uib-alert ng-repeat="alert in alerts" class="alert col-sm-12" ng-class="'alert-' + (alert.type || 'danger')" 
+              >
+              <!--<i class="fa fa-exclamation-triangle" aria-hidden="true"></ i> -->         
+              {{alert.msg}}
+            </div> 
+
+
+
+            <form id="form" name="form" class="form-horizontal" role="form" novalidate ng-submit="signup(form)">
+
+
+              <!-- Prepended text-->
+              <div class="form-group" ng-class="{ 'has-error': (form.name.$touched ||  form.$submitted) && form.name.$invalid }">
+                <label class="col-md-2 control-label" for="name">Nombre</label>
+                <div class="col-md-10">
+                
+
+                    <input ng-model="user.name" id="name" name="name" class="form-control" placeholder="Nombre" required>
+                  
+
+                  <div   class="help-block"  ng-messages="form.name.$error" ng-if="form.name.$touched||  form.$submitted"  >
+
+                   <div ng-message="required">El nombre es requerido</div>
+
+
+                 </div>
+
+
+               </div>
+             </div> 
+
+             <div class="form-group" ng-class="{ 'has-error': (form.email.$touched ||  form.$submitted) && form.email.$invalid}">
+              <label class="col-md-2 control-label" for="email">E-mail</label>
+              <div class="col-md-10">
+               
+
+                  <input  ng-model="user.email" id="email" name="email" class="form-control" placeholder="E-mail" type="email" required>
+                
+
+                <div   class="help-block"  ng-messages="form.email.$error" ng-if="form.email.$touched||  form.$submitted"  >
+
+                 <div ng-message="required">El correo es requerido</div>
+                 <div ng-message="email">El correo ingresado es incorrecto</div>
+
+               </div>
+
+<!--
+    <span class="error text-danger mrgtop1"  ng-messages="form.email.$error" ng-if="form.email.$touched" >
+     
+            <p ng-message="required">El correo es requerido</p>
+  
+          </span> -->
+        </div>
+      </div> 
+
+
+      <!-- Prepended text-->
+      <div class="form-group" ng-class="{ 'has-error': (form.password.$touched ||  form.$submitted) && form.password.$invalid }">
+        <label class="col-md-2 control-label" for="password">Password</label>
+        <div class="col-md-10">
+         
+           
+            <input ng-minlength="6" ng-model="user.password" id="password" name="password" class="form-control" placeholder="Password" type="password" required>
+         
+          <div   class="help-block "  ng-messages="form.password.$error" ng-if="form.password.$touched||  form.$submitted"  >
+
+            <div ng-message="required">El password es requerido</div>
+              <div ng-message="minlength">El password debe tener como mínimo 6 caracteres</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error': (form.password2.$touched ||  form.$submitted) && form.password2.$invalid}">
+        <label class="col-md-2 control-label" for="password2">Confirma el Password</label>
+        <div class="col-md-10">
+         
+           
+            <input ng-model="user.password2" id="password2" name="password2" class="form-control" placeholder="Reingresa el password" type="password" required  field-check="password">
+         
+          <div   class="help-block "  ng-messages="form.password2.$error" ng-if="form.password2.$touched||  form.$submitted"  >
+
+            <div ng-message="required">El password es requerido</div>
+            <div ng-message="fieldmatch">Los passwords no coinciden</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      
+
+
+      <div style="margin-top:10px" class="form-group">
+        <!-- Button -->
+
+        <div class="col-sm-12 controls">
+
+          <button type="submit" class="btn btn-lg btn-success btn-block" promise-btn="service" >Registrate
+          </button> 
+
+        </div>
+      </div>
+
+
+      <div class="form-group">  
+        <div class="col-md-12 control">
+         <div class="line line-dashed"></div>
+         <p class="text-center">¿Ya posees una cuenta? </p>
+         <a ui-sref="access.signin" class="btn btn-lg btn-default btn-block">Acceder</a>
+
+       </div>
+     </div>    
+
+
+
+
+   </form>     
+
+
+
+ </div>                     
+</div>  
+</div>
+</div>    
+
+
+<div class="row">
+
+  <div class="text-center" ng-include="'tpl/blocks/page_footer.html'">
+    {% include 'blocks/page_footer.html' %}
+  </div>
+</div>
+</div>

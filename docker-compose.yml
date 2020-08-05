@@ -1,0 +1,64 @@
+####################################
+# 06/JULY/2020                     #
+# NEOSUNIVERSITY                   #
+####################################
+version: '3'
+
+services:
+    nginx:
+        build:
+            context: .
+            dockerfile: ./build/nginx/Dockerfile
+        container_name: neosuniversity_nginx
+        volumes:
+            - ./app_backend/:/var/www/app_backend
+        ports:
+            - 8001:80
+        networks:
+            - network-neosuniversity
+        depends_on:
+            - php  
+    php:
+        build:
+            context: .
+            dockerfile: ./build/php/Dockerfile
+        container_name: neosuniversity_php
+        environment:
+            APP_ENV: dev
+            DATABASE_URL: mysql://root:root@mysql:3306/neosuniversity?serverVersion=5.7
+        volumes:
+            - ./app_backend/:/var/www/app_backend
+        networks:
+            - network-neosuniversity
+        depends_on:
+            - mysql
+    mysql:
+        image: mysql:8.0.21
+        container_name: neosuniversity_mysql
+        security_opt:
+            - seccomp:unconfined
+        command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-authentication-plugin=mysql_native_password']
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 3306:3306
+        volumes:
+            - ./app_backend/scriptsSQL:/docker-entrypoint-initdb.d/:rw
+            - ./mysql:/var/lib/mysql
+        networks:
+            - network-neosuniversity
+    apache:
+        build:
+            context: .
+            dockerfile: ./build/apache/Dockerfile
+        container_name: neosuniversity_apache
+        volumes:
+            - ./app_frontend /var/www/app_frontend
+        ports:
+            - 80:80
+        networks:
+            - network-neosuniversity
+        depends_on:
+            - nginx 
+networks:
+    network-neosuniversity:

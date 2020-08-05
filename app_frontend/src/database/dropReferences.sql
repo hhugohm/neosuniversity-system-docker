@@ -1,0 +1,13 @@
+ALTER TABLE tc_course DROP FOREIGN KEY tc_course_ibfk_1;
+ALTER TABLE tc_course DROP FOREIGN KEY tc_course_ibfk_2;
+ALTER TABLE tr_categ_course DROP FOREIGN KEY tr_categ_course_ibfk_1;
+ALTER TABLE tr_categ_course DROP FOREIGN KEY tr_categ_course_ibfk_2;
+ALTER TABLE tr_class DROP FOREIGN KEY tr_class_ibfk_1;
+ALTER TABLE tr_course_section DROP FOREIGN KEY tr_course_section_ibfk_1;
+ALTER TABLE tw_class DROP FOREIGN KEY tw_class_ibfk_1;
+ALTER TABLE tw_class DROP FOREIGN KEY tw_class_ibfk_2;
+ALTER TABLE tw_control_panel DROP FOREIGN KEY tw_control_panel_ibfk_1;
+ALTER TABLE tw_control_panel DROP FOREIGN KEY tw_control_panel_ibfk_2;
+ALTER TABLE tw_section DROP FOREIGN KEY tw_section_ibfk_1;
+ALTER TABLE tw_section DROP FOREIGN KEY tw_section_ibfk_2;
+ALTER TABLE tw_user DROP FOREIGN KEY tw_user_ibfk_1;

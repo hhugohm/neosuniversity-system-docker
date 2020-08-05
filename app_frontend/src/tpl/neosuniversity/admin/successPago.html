@@ -1,0 +1,64 @@
+<div class="wrapper-md" ng-controller="SuccessPagoController">
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    Detalles de su Pago.
+                </div>
+
+
+
+                <div class="panel-body">
+
+                    <h3>¡Muchas gracias por su pago!</h3>
+
+                    <h4>Recuerde que sus clases inician el 25 de Febrero. </h4>
+                    <h4>Tenemos medios de comunicación en caso de algun problema, duda o aclaración: </h4>
+                    <h4>WhatsApp: +5217223547727</h4>
+                    <h4>Facebook via inbox: https://www.facebook.com/neosuniversity/</h4>
+                    <h4>Correo Electrónico: neosuniversity@gmail.com</h4>
+
+
+                    <div data-loading></div>
+
+                    <div class="row" >
+
+                        <div class="col-md-7">
+
+                            <table st-table="courses" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Detalle</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 <tr >
+                                    <td>Order ID en Paypal</td>
+                                    <td>{{data.orderID}}</td>
+                                </tr>
+                                 <tr >
+                                     <td>Paymeny ID en Paypal</td>
+                                     <td>{{data.paymentID}}</td>
+                                 </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+                    <button class="btn btn-danger" ng-click="viewCourses()"> Ver mis cursos <i
+                            class="fa fa-folder" aria-hidden="true"></i></button>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

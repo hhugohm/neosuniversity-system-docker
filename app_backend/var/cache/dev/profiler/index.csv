@@ -1,0 +1,8 @@
+d1f28e,127.0.0.1,GET,http://localhost:8000/api/course,1594494624,ed12bc,200
+ed12bc,127.0.0.1,GET,http://localhost:8000/api/course,1594494624,,404
+2cbaae,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594494700,600f8c,200
+600f8c,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594494700,,500
+1964bd,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594494830,3403fb,200
+3403fb,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594494830,,500
+b6253f,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594494984,,200
+dd7574,127.0.0.1,GET,http://localhost:8000/api/getcourse,1594508502,,200

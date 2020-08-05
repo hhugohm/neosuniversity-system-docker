@@ -1,0 +1,149 @@
+<div class="wrapper-md" ng-controller="CoursePremieController">
+    <toaster-container
+            toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-white b-a">
+                <li>
+                    <a href>
+                        <i class="fa fa-home"></i> Todos tus cursos</a>
+                </li>
+                <li class="active">Panel de control</li>
+            </ul>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                    Panel de control
+                </div>
+
+                <div class="bg-white wrapper-md">
+                    <div data-loading> </div>
+
+                    <div class="row row-title-course">
+                        <div class="col-xs-6 col-md-3">
+                            <img class="img-responsive" ng-src="{{curso.imgcourse}}">
+                        </div>
+                        <div class="col-md-offset-1 col-xs-6 col-md-7">
+
+                            <h3>{{curso.coursename}}</h3>
+                            <hr>
+                            <h4>{{curso.shortdesc}}</h4>
+
+                            <div ng-if="curso.id===2 && true === true">
+<hr>
+                                <p> <strong> ¿Quieres iniciar tu carrera profesional como desarrollador Java? entoneces mira la promoción que tenemos: Curso premium  Oracle Java 11 + Git</strong>
+                                </p>
+
+                                <a  ui-sref="app.course-overview({courseId:4, description:'JAVA11Premium'})" class="btn btn-danger font-bold"><i class="fa fa-rocket" aria-hidden="true"></i> Ver promoción</a>
+                            </div>
+
+                            <div ng-if="curso.is_online===1">
+                                <hr>
+                            <p> <i style="color: red" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+
+                                Este curso es en vivo, da click en el Link para entrar al entrenamiento en vivo  .</p>
+                                <a  ng-href="{{curso.url_course_online}}" target="_blank" class="btn btn-info font-bold">Acceso a clase en vivo</a>
+                            </div>
+
+
+
+
+
+
+
+                            <!--
+
+
+                            <progressbar class="active m-b-sm" value="80" type="info">35/45 lecciones</progressbar>
+  -->
+
+                        </div>
+                    </div>
+
+
+                    <div class="row wrapper-md">
+                        <div class="col-md-12">
+
+
+                            <div class="tab-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href data-toggle="tab" data-target="#tab_1">Contenido del Curso </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+
+
+                                        <div class="row">
+                                            <div class="col-md-offset-1 col-md-10">
+
+                                                <accordion close-others="false" class="panelcourses">
+                                                    <!--is-open="section.isOpen" -->
+
+                                                    <accordion-group  is-open="true" ng-repeat="section in sections">
+                                                        <accordion-heading>
+                                                            <div>
+                                                                {{section.description}}
+
+                                                                <i class="pull-right glyphicon"
+                                                                   ng-class="{'glyphicon-chevron-down': section.isOpen, 'glyphicon-chevron-right': !section.isOpen}"></i>
+                                                                <!--  <i class="pull-right" style="font-style: italic;font-weight: bold;"> {{section.classescompleted}}/{{section.section.numberclasses}}</i> -->
+                                                            </div>
+                                                        </accordion-heading>
+
+                                                        <div>
+                                                            <div class="list-group"
+                                                                 ng-repeat="clase in section.classes">
+                                                                <!--<a  ui-sref="app.playlesson({controlPanelId:{{tw_class.control_panel_id}}, classId:{{tw_class.class_id}}, sectionId:{{tw_class.section_id}} })"  class="list-group-item"> -->
+                                                                <a ng-click="playLesson(clase)"
+                                                                   class="list-group-item">
+                                                                    <!--
+                                                                    <i class="fa  icon-blue pull-right"
+                                                                       aria-hidden="true"
+                                                                       ng-class="{'fa-circle-thin' : clase.iscompleted === 0, 'fa-check-circle' : clase.iscompleted === 1}"></i> -->
+
+                                                                    <i class="fa fa-play-circle icon-play-topic icon-blue"
+                                                                       aria-hidden="true" ng-if="clase.videourl !== ''"></i>
+
+                                                                    <i class="fa fa-play-circle icon-play-topic"
+                                                                       aria-hidden="true" ng-if="clase.videourl === ''"></i>
+
+                                                                    &nbsp;&nbsp;{{clase.class_id}}.
+                                                                    {{clase.classdescription}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                    </accordion-group>
+
+                                                </accordion>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="becasneos.html">
+    <div ng-include="'tpl/neosuniversity/becasneos-resumen.html'"></div>
+</script>

@@ -1,0 +1,24 @@
+http://xaviesteve.com/354/acentos-y-enes-aparecen-mal-a%C2%B1-en-php-con-mysql-utf-8-iso-8859-1/
+
+Switch to mysql database (type command at mysql> prompt, do not include string “mysql>”):
+mysql> use mysql;
+
+
+delete from user where user='neossoftware'and host='localhost';
+
+flush privileges;
+
+
+create user 'neossoftware'@'localhost' identified by 'discom';
+
+SHOW GRANTS FOR 'root'@'localhost';
+
+GRANT ALL PRIVILEGES ON neosuniversity.* TO 'neossoftware'@'localhost' WITH GRANT OPTION;
+
+The syntax is:
+
+SET PASSWORD FOR 'user-name-here'@'hostname-name-here' = PASSWORD('new-password-here');
+
+
+
+CREATE DATABASE mydb CHARACTER SET utf8 COLLATE utf8_bin;

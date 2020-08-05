@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Configuracion para generar la documentacion PHP Doc
+
+ejecutar el comando
+$phpdox
+-->
+<phpdox xmlns="http://xml.phpdox.net/config">
+    <project name="Example" source="${basedir}/src" workdir="${basedir}/build/api/xml">
+        <collector backend="parser" />
+        <generator output="${basedir}/build/api">
+            <build engine="html" output="html"/>
+        </generator>
+    </project>
+</phpdox>

@@ -1,0 +1,343 @@
+<div class="wrapper-md" ng-controller="CourseOverviewController">
+    <!-- toaster directive -->
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <!-- / toaster directive -->
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-white b-a">
+                <li>
+                    <a href>
+                        <i class="fa fa-home"></i> Herramientas de desarrollo</a>
+                </li>
+                <li class="active">{{course.coursename}}</li>
+            </ul>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                    Panel de control
+                </div>
+
+                <div class="bg-white wrapper-md">
+
+                    <div class="row row-title-course">
+                        <div class="col-xs-6 col-md-3">
+                            <img class="img-responsive" ng-src="{{course.imgcourse}}">
+                        </div>
+                        <div class="col-md-offset-1 col-xs-6 col-md-7">
+
+                            <div data-loading> </div>
+
+                            <h3>{{course.coursename}}</h3>
+                            <hr>
+
+                            <h4>{{course.shortdesc}}
+                            </h4>
+
+
+                            <div style="padding-top: 20px;">
+
+                                <div class="price-text" ng-if="course.isfree===0">
+                                    <span style="font-size: 25px;">
+
+                                        <div ng-if="course.cost !== 0">
+
+                                         Precio Regular: <s> 280.00 </s>USD.
+                                       </div>
+                                    </span>
+
+                                </div>
+
+                                <div  ng-if="course.isfree===0">
+                                    <div ng-if="course.cost !== 0">
+                                        <p><strong>Formas de pago</strong></p>
+                                        <h5>a). Un solo pago </h5>
+                                    </div>
+                                </div>
+
+                                <div class="price-text" ng-if="course.isfree===1">
+                                    <span class="price-text--free">
+                                        <span class="sr-only">Price:</span>
+                                        Gratis
+                                    </span>
+                                </div>
+
+                                <div class="price-text" ng-if="course.isfree===0">
+                                    <span class="price-text--free">
+                                       <div ng-if="course.cost === 0">
+                                           Gratis
+                                       </div>
+                                        <div ng-if="course.cost !== 0">
+
+                                           $ {{course.cost}} USD.
+                                       </div>
+                                    </span>
+
+                                </div>
+
+
+                                <div ng-if="course.isfree===1">
+                                  <a ui-sref="app.inscripcion({courseId:course.id, isfree: course.isfree})" class="btn btn-success font-bold">Inscribete ahora!</a>
+                               </div>
+
+                                <div ng-if="course.isfree===0 && course.cost === 0">
+                                    <a  class="btn btn-success font-bold" ui-sref="app.inscripcion({courseId:course.id, isfree: course.isfree})" >Incribete ahora!</a>
+                                </div>
+
+                                <script>
+                                    paypal.Button.driver('angular', window.angular);
+
+                                    app.controller('paypalcontroller', function($scope, $state, courseFactory,toaster) {
+
+                                        $scope.toaster = {
+                                            type: 'success',
+                                            title: 'Curso Premium',
+                                            text: ''
+                                        };
+
+                                        $scope.courseId = $scope.$parent.params.courseId;
+                                        $scope.userLogged = $scope.$parent.userLogged;
+
+
+                                        $scope.params = {
+                                            //user logged
+                                            email : $scope.userLogged.mail,
+                                            courseId: $scope.courseId,
+                                            payIsComplete: null,
+                                            paypalOrderId  : '',
+                                            paypalPaymentId: ''
+                                        };
+
+                                        $scope.opts = {
+
+                                            env: 'production',
+
+                                            client: {
+                                                //sandbox:    'AQh7EZnm32YzjNJLD0djDqD5aXi8BFCq_vEQmJYu-uaH9Z9xQZ3uRFq0oMvEf3ngNe9RZbo91f2bXO1r'
+                                                 production:  'AZ8_KRTTtx4XE0hSN5ObYmW6JHr0T_0IwMUXrH3Zp5IUNDm69jprZZ1lq_fh5kubNKXdjNdqrXAdmwaN'
+                                            },
+
+                                            paymentAparta: function() {
+
+                                                var env    = this.props.env;
+                                                var client = this.props.client;
+                                                $scope.pagocompleto = 0;
+
+                                                return paypal.rest.payment.create(env, client, {
+                                                    transactions: [
+                                                        {
+                                                            amount: { total: '40.00', currency: 'USD' }
+                                                        }
+                                                    ]
+                                                });
+                                            },
+
+                                            payment: function() {
+
+                                                var env    = this.props.env;
+                                                var client = this.props.client;
+                                                $scope.pagocompleto = 1;
+
+                                                return paypal.rest.payment.create(env, client, {
+                                                    transactions: [
+                                                        {
+                                                            amount: { total: '80.00', currency: 'USD' }
+                                                        }
+                                                    ]
+                                                });
+                                            },
+
+                                            commit: true, // Optional: show a 'Pay Now' button in the checkout flow
+
+                                            onAuthorize: function(data, actions) {
+                                                // Optional: display a confirmation page here
+                                                return actions.payment.execute().then(function() {
+
+                                                    $scope.params.payIsComplete=$scope.pagocompleto;
+                                                    $scope.params.paypalOrderId=data.orderID;
+                                                    $scope.params.paypalPaymentId=data.paymentID;
+
+                                                    toaster.pop($scope.toaster.type, $scope.toaster.title, 'Se acreditó el pago exitosamente!!, espere un momento lo estamos redireccionando a sus cursos ...');
+
+
+                                                    $scope.secondCourse = {
+                                                        //user logged
+                                                        email : $scope.userLogged.mail,
+                                                        courseId: 3,
+                                                        payIsComplete: $scope.pagocompleto,
+                                                        paypalOrderId  : data.orderID,
+                                                        paypalPaymentId: data.paymentID
+                                                    };
+
+                                                    $scope.service = courseFactory.subscriptionPremier($scope.params);
+
+                                                    $scope.service.then(function(res){
+                                                        toaster.pop($scope.toaster.type, $scope.toaster.title, 'Espere unos segundos lo estamos redireccionando a sus cursos ...');
+
+                                                    }, function(error){
+                                                        $scope.toaster.type = 'error';
+                                                        toaster.pop($scope.toaster.type, $scope.toaster.title, 'No fue posible realizar la inscripción envia un correo a neosuniversity@gmail.com, tu inscripción esta asegurada por lo que no tienes porque preocuparte.');
+                                                    });
+
+                                                    $scope.servicetwo = courseFactory.subscriptionPremier($scope.secondCourse);
+                                                    $scope.servicetwo.then(function(res){
+                                                        setTimeout(function(){ $state.go('app.successpago', {data: data}); }, 2500);
+                                                    }, function (err){
+                                                        $scope.toaster.type = 'error';
+                                                        toaster.pop($scope.toaster.type, $scope.toaster.title, 'No fue posible realizar la inscripción envia un correo a neosuniversity@gmail.com, tu inscripción esta asegurada por lo que no tienes porque preocuparte.');
+                                                    })
+
+                                                });
+                                            }
+                                        };
+
+                                    });
+                                </script>
+
+                                <div class="shoppingCart" ng-controller="paypalcontroller">
+                                    <div ng-if="course.isfree===0 && course.cost !== 0">
+
+
+                                    <paypal-button locale="'es_MX'" env="opts.env" client="opts.client" payment="opts.payment" commit="opts.commit" on-authorize="opts.onAuthorize"></paypal-button>
+
+                                        <hr>
+                                        <p> <strong>b). Pago en dos exhibiciones.</strong> </p>
+                                        <div class="price-text">
+                                    <span class="price-text--free">
+
+                                           $40 USD. (Primer pago)
+                                    </span>
+                                            <p> Segundo pago de $50 USD (Antes del 9 de Marzo) </p>
+                                            <paypal-button locale="'es_MX'" env="opts.env" client="opts.client" payment="opts.paymentAparta" commit="opts.commit" on-authorize="opts.onAuthorize"></paypal-button>
+                                            <hr>
+                                            <p><strong> ¿Te interesa realizar el Pago en Efectivo (Solo México) ? </strong>    <a ng-click="open('lg')" class="btn btn-info font-bold">Información</a></p>
+
+                                            <p><strong> <span class="label label-success">Nuevo!</span> ¿NeosUniversity ofrece alguna Beca? </strong>    <a ng-click="openBeca('lg')" class="btn btn-info font-bold">Becas NeosUniversity</a></p>
+
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <!--
+                                                               <div ng-if="!showInscription">
+                                                                <a ui-sref="app.continuarCurso({courseId:'1' })" class="btn btn-success font-bold">Continua con el curso</a>
+                                                             </div> -->
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row wrapper-md">
+
+
+
+
+                        <div class="col-md-12">
+
+
+
+
+
+
+                            <div class="tab-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href data-toggle="tab" data-target="#tab_1">Descripción </a>
+                                    </li>
+                                    <li ng-if=" course.isfree === 1">
+                                        <a href data-toggle="tab" data-target="#tab_2">Contenido del curso </a>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+
+                                        <div class="row">
+
+                                            <div class="col-md-1">
+                                                <strong></strong>
+                                            </div>
+
+                                            <div class="col-md-9" ng-bind-html="course.coursedesc">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="tab-pane" id="tab_2">
+
+
+                                        <div class="row">
+                                            <div class="col-md-offset-1 col-md-10">
+
+                                                <accordion close-others="true" class="panelcourses">
+                                                    <!--is-open="section.isOpen" -->
+
+                                                    <accordion-group ng-repeat="section in sections">
+                                                        <accordion-heading>
+                                                            <div>
+                                                                {{section.description}}
+
+                                                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': section.isOpen, 'glyphicon-chevron-right': !section.isOpen}"></i>
+                                                            </div>
+                                                        </accordion-heading>
+
+                                                        <div>
+                                                            <ul class="list-group" ng-repeat="tr_class in section.classes">
+                                                                <li  class="list-group-item">
+                                                                    <i class="fa  icon-blue pull-right" aria-hidden="true" ></i>
+                                                                    <i class="fa fa-play-circle icon-play-topic" aria-hidden="true"></i>&nbsp;&nbsp;{{tr_class.class_id}}. {{tr_class.classdescription}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                    </accordion-group>
+
+                                                </accordion>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--
+           -->
+    </div>
+</div>
+</div>
+
+<script type="text/ng-template" id="pagoBancomer.html">
+    <div ng-include="'tpl/neosuniversity/bancomer-modal.html'"></div>
+</script>
+
+<script type="text/ng-template" id="becasneos.html">
+    <div ng-include="'tpl/neosuniversity/becasneos-modal.html'"></div>
+</script>
+

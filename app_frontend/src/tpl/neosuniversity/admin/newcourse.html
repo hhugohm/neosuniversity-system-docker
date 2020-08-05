@@ -1,0 +1,482 @@
+<div class="wrapper-md" ng-controller="NewCourseController">
+    <!-- toaster directive -->
+    <toaster-container
+            toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default" ng-if="showList">
+
+                <div class="panel-heading">
+
+                    Lista de cursos
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div data-loading></div>
+
+                            <table st-table="courses" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre del Curso</th>
+                                    <th>Modificar Descripción</th>
+                                    <th>Modificar Temario</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="curso in courses">
+                                    <td>{{curso.id}}</td>
+                                    <td>{{curso.coursename}}</td>
+                                    <td><button class="btn btn-sm btn-success" ng-click="showUpdate(curso)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                    <td><button class="btn btn-sm btn-success" ng-click="showTemario(curso)"><i class="fa fa-bars" aria-hidden="true"></i></button></td>
+
+                                </tr>
+                                </tbody>
+
+                            </table>
+
+                            <div class="form-group">
+
+                                <div class="col-md-5">
+                                    <button class="btn btn-danger" ng-click="viewAlta()">Nuevo Curso <i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default" ng-if="showAlta">
+
+                <div class="panel-heading">
+
+                    Nuevo Curso
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+
+                            <form class="form-horizontal" name="form" role="form" novalidate
+                                  ng-submit="saveNewCourse(form)">
+                                <fieldset>
+
+
+                                    <!-- change col-sm-N to reflect how you would like your column spacing (http://getbootstrap.com/css/#forms-control-sizes) -->
+
+
+                                    <!-- Form Name -->
+                                    <legend>Nuevo curso</legend>
+
+                                    <!-- Text input http://getbootstrap.com/css/#forms -->
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.courseName.$touched ||  form.$submitted) && form.courseName.$invalid }">
+                                        <label for="courseName" class="control-label col-md-2">Nombre curso</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="newcourse.courseName"
+                                                   id="courseName" name="courseName"
+                                                   required>
+                                            <div class="help-block" ng-messages="form.courseName.$error"
+                                                 ng-if="form.courseName.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El nombre del curso es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="autor" class="control-label col-md-2">Autor</label>
+                                        <div class="col-md-5">
+                                            <select ng-model="newcourse.author" id="autor" class="form-control"
+                                                    required>
+                                                <option ng-repeat="a in authors" value="{{a.authorId}}">{{a.name}}
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.description.$touched ||  form.$submitted) && form.description.$invalid }">
+                                        <label class="control-label col-md-2">Descripcion del curso</label>
+                                        <div class="col-md-5">
+                                            <textarea class="form-control" ng-model="newcourse.description"
+                                                      name="description"
+                                                      required></textarea>
+
+                                            <div class="help-block" ng-messages="form.description.$error"
+                                                 ng-if="form.description.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La descripcion es requerida</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">Es Gratis?</label>
+                                        <div class="col-md-5">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isFree"
+                                                       ng-model="newcourse.isFree" ng-value="1"> Si
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isFree"
+                                                       ng-model="newcourse.isFree" ng-value="0"> No
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">Es Online?</label>
+                                        <div class="col-md-5">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isOnline"
+                                                       ng-model="newcourse.isOnline" ng-value="1"> Si
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isOnline"
+                                                       ng-model="newcourse.isOnline" ng-value="0"> No
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.cost.$touched ||  form.$submitted) && form.cost.$invalid }">
+                                        <label for="cost" class="control-label col-md-2">Precio</label>
+                                        <div class="col-md-5">
+                                            <input type="number" id="cost" class="form-control" name="cost"
+                                                   ng-model="newcourse.cost" required>
+                                            <div class="help-block" ng-messages="form.cost.$error"
+                                                 ng-if="form.cost.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El costo es requerido</div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.imgThumb.$touched ||  form.$submitted) && form.imgThumb.$invalid }">
+                                        <label for="imgThumb" class="control-label col-md-2">Imagen Mini</label>
+                                        <div class="col-md-5">
+                                            <input type="text" required id="imgThumb" class="form-control"
+                                                   name="imgThumb" ng-model="newcourse.imgThumb">
+                                            <div class="help-block" ng-messages="form.imgThumb.$error"
+                                                 ng-if="form.imgThumb.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La imagen mini es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.img.$touched ||  form.$submitted) && form.img.$invalid }">
+                                        <label for="img" class="control-label col-md-2">Imagen</label>
+                                        <div class="col-md-5">
+                                            <input type="text" name="img" id="img" class="form-control"
+                                                   ng-model="newcourse.img" required>
+                                            <div class="help-block" ng-messages="form.img.$error"
+                                                 ng-if="form.img.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La imagen es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.shortDesc.$touched ||  form.$submitted) && form.shortDesc.$invalid }">
+                                        <label for="shortDesc" class="control-label col-md-2">Descripcion corta</label>
+                                        <div class="col-md-5">
+                                            <input type="text" name="shortDesc" id="shortDesc" class="form-control"
+                                                   ng-model="newcourse.shortDesc" required>
+                                            <div class="help-block" ng-messages="form.shortDesc.$error"
+                                                 ng-if="form.shortDesc.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La descripcion corta es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-loading></div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger"> Guardar <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ newcourse | json }}
+                                            </pre>
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="panel panel-default" ng-if="showModificacion">
+
+                <div class="panel-heading">
+
+                    Modificacion de Curso
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+
+
+
+                            <form class="form-horizontal" name="form" role="form" novalidate
+                                  ng-submit="updateCourse(form)">
+                                <fieldset>
+
+
+                                    <!-- change col-sm-N to reflect how you would like your column spacing (http://getbootstrap.com/css/#forms-control-sizes) -->
+
+
+                                    <!-- Form Name -->
+                                    <legend>Modificacion de curso</legend>
+
+                                    <!-- Text input http://getbootstrap.com/css/#forms -->
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.courseName.$touched ||  form.$submitted) && form.courseName.$invalid }">
+                                        <label for="courseName" class="control-label col-md-2">Nombre curso</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" ng-model="courseUp.courseName"
+                                                    name="courseName"
+                                                   required>
+                                            <div class="help-block" ng-messages="form.courseName.$error"
+                                                 ng-if="form.courseName.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El nombre del curso es requerido</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="autor" class="control-label col-md-2">Autor</label>
+                                        <div class="col-md-5">
+                                            <select ng-model="courseUp.author"  class="form-control"
+                                                    required>
+                                                <option ng-repeat="a in authors" value="{{a.authorId}}">{{a.name}}
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.description.$touched ||  form.$submitted) && form.description.$invalid }">
+                                        <label class="control-label col-md-2">Descripcion del curso</label>
+                                        <div class="col-md-10">
+
+                                            <div text-angular ng-model="courseUp.description" class="btn-groups"></div>
+
+
+                                            <textarea style="display:none;" class="form-control"  ng-model="courseUp.description"
+                                                      name="description"
+                                                      required></textarea>
+
+                                            <div class="help-block" ng-messages="form.description.$error"
+                                                 ng-if="form.description.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La descripcion es requerida</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">Es Gratis?</label>
+                                        <div class="col-md-5">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isFree"
+                                                       ng-model="courseUp.isFree" ng-value="1"> Si
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isFree"
+                                                       ng-model="courseUp.isFree" ng-value="0"> No
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">Es Online?</label>
+                                        <div class="col-md-5">
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isOnline"
+                                                       ng-model="courseUp.isOnline" ng-value="1"> Si
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="radio" name="isOnline"
+                                                       ng-model="courseUp.isOnline" ng-value="0"> No
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                          ng-class="{ 'has-error': (form.urlcourseonline.$touched ||  form.$submitted) && form.urlcourseonline.$invalid }">
+                                    <label for="courseName" class="control-label col-md-2">URL de conexion a clase online: </label>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" ng-model="courseUp.urlcourseonline"
+                                               name="urlcourseonline"   ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/"
+                                               >
+                                        <div class="help-block" ng-messages="form.urlcourseonline.$error"
+                                             ng-if="form.urlcourseonline.$touched||  form.$submitted">
+
+                                            <div ng-message="pattern">La URL no tiene un formato válido</div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.cost.$touched ||  form.$submitted) && form.cost.$invalid }">
+                                        <label for="cost" class="control-label col-md-2">Precio</label>
+                                        <div class="col-md-5">
+                                            <input type="number"  class="form-control" name="cost"
+                                                   ng-model="courseUp.cost" required>
+                                            <div class="help-block" ng-messages="form.cost.$error"
+                                                 ng-if="form.cost.$touched||  form.$submitted">
+
+                                                <div ng-message="required">El costo es requerido</div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.imgThumb.$touched ||  form.$submitted) && form.imgThumb.$invalid }">
+                                        <label for="imgThumb" class="control-label col-md-2">Imagen Mini</label>
+                                        <div class="col-md-5">
+                                            <input type="text" required class="form-control"
+                                                   name="imgThumb" ng-model="courseUp.imgThumb">
+                                            <div class="help-block" ng-messages="form.imgThumb.$error"
+                                                 ng-if="form.imgThumb.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La imagen mini es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.img.$touched ||  form.$submitted) && form.img.$invalid }">
+                                        <label for="img" class="control-label col-md-2">Imagen</label>
+                                        <div class="col-md-5">
+                                            <input type="text" name="img"  class="form-control"
+                                                   ng-model="courseUp.img" required>
+                                            <div class="help-block" ng-messages="form.img.$error"
+                                                 ng-if="form.img.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La imagen es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"
+                                         ng-class="{ 'has-error': (form.shortDesc.$touched ||  form.$submitted) && form.shortDesc.$invalid }">
+                                        <label for="shortDesc" class="control-label col-md-2">Descripcion corta</label>
+                                        <div class="col-md-5">
+                                            <input type="text" name="shortDesc"  class="form-control"
+                                                   ng-model="courseUp.shortDesc" required>
+                                            <div class="help-block" ng-messages="form.shortDesc.$error"
+                                                 ng-if="form.shortDesc.$touched||  form.$submitted">
+
+                                                <div ng-message="required">La descripcion corta es requerida</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <button class="btn btn-danger"> Guardar <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2"></label>
+                                        <div class="col-md-5">
+                                            <pre>
+                                            {{ newcourse | json }}
+                                            </pre>
+                                        </div>
+                                    </div>
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

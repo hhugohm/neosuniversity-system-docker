@@ -1,0 +1,110 @@
+<!--<div class="bg-light lter b-b wrapper-md">
+
+</div> -->
+
+<div class="wrapper-md" ng-controller="GitController">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-white b-a">
+                <li>
+                    <a href>
+                        <i class="fa fa-home"></i> Todos tus cursos</a>
+                </li>
+                <li class="active">Panel de control</li>
+            </ul>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+
+                    Panel de control
+                </div>
+
+                <div class="bg-white wrapper-md">
+
+                    <div class="row row-title-course">
+                        <div class="col-xs-6 col-md-3">
+                            <img class="img-responsive" src="img/neosuniv/git-logo.png">
+                        </div>
+                        <div class="col-md-offset-1 col-xs-6 col-md-7">
+
+                            <h3>Git/Github de principiante a experto</h3>
+                            <hr>
+                            <!--
+                            <h4>Avance del curso</h4>
+
+                            <progressbar class="active m-b-sm" value="80" type="info">35/45 lecciones</progressbar>
+  -->
+
+                        </div>
+                    </div>
+
+
+                    <div class="row wrapper-md">
+                        <div class="col-md-12">
+
+
+                            <div class="tab-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href data-toggle="tab" data-target="#tab_1">Contenido Curso </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+
+
+                                        <div class="row">
+                                            <div class="col-md-offset-1 col-md-10">
+
+                                                <accordion close-others="true" class="panelcourses">
+                                                    <!--is-open="section.isOpen" -->
+
+                                                    <accordion-group ng-repeat="section in sections">
+                                                        <accordion-heading>
+                                                            <div>
+                                                                {{section.section.description}}
+
+                                                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': section.isOpen, 'glyphicon-chevron-right': !section.isOpen}"></i>
+                                                              <!--  <i class="pull-right" style="font-style: italic;font-weight: bold;"> {{section.classescompleted}}/{{section.section.numberclasses}}</i> -->
+                                                            </div>
+                                                        </accordion-heading>
+
+                                                        <div>
+                                                            <div class="list-group" ng-repeat="tw_class in section.tw_classes">
+                                                                <!--<a  ui-sref="app.playlesson({controlPanelId:{{tw_class.control_panel_id}}, classId:{{tw_class.class_id}}, sectionId:{{tw_class.section_id}} })"  class="list-group-item"> -->
+                                                                <a ng-click="playLesson(tw_class)" class="list-group-item">
+                                                                    <i class="fa  icon-blue pull-right" aria-hidden="true"  ng-class="{'fa-circle-thin' : tw_class.iscompleted === 0, 'fa-check-circle' : tw_class.iscompleted === 1}" ></i>
+                                                                    <i class="fa fa-play-circle icon-play-topic" aria-hidden="true"></i>&nbsp;&nbsp;{{tw_class.clase.class_id}}. {{tw_class.clase.classdescription}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                    </accordion-group>
+
+                                                </accordion>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <!--
+           -->
+        </div>
+    </div>
+</div>
