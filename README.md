@@ -1,9 +1,9 @@
 # neosuniversity-system-docker
 
 -----------------------------
--Ejecutar $docker-compose build
--Ejecutar $docker-compose up
--En un browser : http://localhost/angular/
+- Ejecutar $docker-compose build
+- Ejecutar $docker-compose up
+- En un browser : http://localhost/angular/
 
 
 ####Instrucciones deprecadas
