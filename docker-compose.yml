@@ -6,6 +6,7 @@ version: '3'
 
 services:
     nginx:
+        image: neossoftware/neosuniversity-nginx:latest
         build:
             context: .
             dockerfile: ./build/nginx/Dockerfile
@@ -19,6 +20,7 @@ services:
         depends_on:
             - php  
     php:
+        image: neossoftware/neosuniversity-php:latest
         build:
             context: .
             dockerfile: ./build/php/Dockerfile
@@ -48,6 +50,7 @@ services:
         networks:
             - network-neosuniversity
     apache:
+        image: neossoftware/neosuniversity-apache:latest
         build:
             context: .
             dockerfile: ./build/apache/Dockerfile
